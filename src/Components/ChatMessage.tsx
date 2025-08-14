@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Ref } from "react";
 
 interface Props {
   sender: string;
@@ -12,7 +12,7 @@ const ChatMessage = ({ sender, message, isOwnMessage }: Props) => {
     <div
       className={
         isSystemMessage
-          ? "flex justify-center items-center"
+          ? "flex items-center justify-center "
           : isOwnMessage
           ? "flex items-center justify-end"
           : "flex items-center justify-start"

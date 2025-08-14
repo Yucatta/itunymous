@@ -1,27 +1,45 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 interface Props {
   onSendMessage: (e: string) => void;
 }
 const ChatForm = ({ onSendMessage }: Props) => {
-  const [message, setmessage] = useState("");
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault;
-    if (message.trim() === "") {
-      setmessage("");
+  const [_, setmessage] = useState("");
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
+  function handleSubmit() {
+    if (inputRef.current && inputRef.current.value) {
+      onSendMessage(inputRef.current.value);
+      if (inputRef.current) {
+        inputRef.current.value = "";
+        setmessage("");
+      }
     }
-    console.log("submitted");
   }
+
+  useEffect(() => {
+    function checkPressedKey(e: KeyboardEvent) {
+      if (e.code === "Enter") {
+        handleSubmit();
+      }
+    }
+    addEventListener("keypress", checkPressedKey);
+    return () => removeEventListener("keypress", checkPressedKey);
+  }, []);
+
   return (
-    <div className="flex gap-2 mt-4">
+    <div className="flex gap-2 justify-center items-center p-2">
       <input
         type="text"
-        onChange={(e) => setmessage(e.target.value)}
-        className="flex-1 px-4 border-2 py-2 w-180 bg-neutral-700 rounded-lg foucs--outline-none"
+        ref={inputRef}
+        onChange={(e) => {
+          setmessage(e.target.value);
+        }}
+        className="flex-1 px-4 border-2 py-2 w-176 bg-neutral-700 rounded-lg foucs--outline-none"
       ></input>
       <button
-        onClick={() => onSendMessage(message)}
-        className="px-4 py-2 rounded-lg bg-blue-500"
+        onClick={handleSubmit}
+        className="px-4 py-2 rounded-lg cursor-pointer bg-blue-500"
       >
         Send
       </button>

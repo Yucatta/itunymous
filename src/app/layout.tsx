@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Header from "@/Components/Header";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,7 +28,23 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <div className=" h-full  flex justify-center items-start  invisible-scrollbar">
+          <div
+            style={{ width: "clamp(0px, 99vw, 1100px)" }}
+            className={
+              " h-auto min-h-screen bg-[rgb(15,44,82)] flex flex-col items-center pb-20  absolute"
+            }
+          >
+            <div
+              style={{ width: "clamp(0px, 99vw, 1100px)" }}
+              className={
+                " z-20 border-b-4  border-[rgb(216,181,100)] flex flex-col items-center h-15 top-0 absolute"
+              }
+            ></div>
+            <Header></Header>
+            <div className="mt-20">{children}</div>
+          </div>
+        </div>
       </body>
     </html>
   );
